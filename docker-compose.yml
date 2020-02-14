@@ -1,17 +1,36 @@
-version: '3.3'
+version: "3.3"
+
+networks:
+  app-tier:
+    driver: bridge
 
 services:
-  postgres:
-    image: bitnami/postgresql
-    container_name: postgres
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    container_name: sqlserver
     environment:
-      POSTGRES_PASSWORD: pgpass
-      POSTGRES_USER: postgres    
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=${SQLSERVER_SA_PASSWORD}
+      - MSSQL_PID=Developer
     ports:
-      - 5432:5432
-    restart: always
+      - 1433:1433
+    networks:
+      - app-tier
+  rabbitmq:
+    image: "bitnami/rabbitmq:3.8"
+    container_name: rabbitmq
+    environment: 
+      - RABBITMQ_USERNAME=${RABBITMQ_USERNAME}
+      - RABBITMQ_PASSWORD=${RABBITMQ_PASSWORD}
+    ports:
+      - "4369:4369"
+      - "5672:5672"
+      - "25672:25672"
+      - "15672:15672"
     volumes:
-      - postgres_data:/var/lib/postgresql/data:rw
-
+      - "rabbitmq_data:/bitnami"
+    networks:
+      - app-tier
 volumes:
-  postgres_data:
+  rabbitmq_data:
+    driver: local
