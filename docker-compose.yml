@@ -1,15 +1,17 @@
-version: "3.7"
+version: '3.3'
 
 services:
-  db:
-    image: postgres
-    container_name: postgresql
-    restart: always
+  postgres:
+    image: bitnami/postgresql
+    container_name: postgres
+    environment:
+      POSTGRES_PASSWORD: pgpass
+      POSTGRES_USER: postgres    
     ports:
       - 5432:5432
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: pgpass
-      PGDATA: /var/lib/postgresql/data
+    restart: always
     volumes:
-      - ./pgdata:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data:rw
+
+volumes:
+  postgres_data:
