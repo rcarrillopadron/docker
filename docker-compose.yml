@@ -4,6 +4,12 @@ networks:
   app-tier:
     driver: bridge
 
+volumes:
+  sqlserver_data:
+    driver: local
+  rabbitmq_data:
+    driver: local
+
 services:
   sqlserver:
     image: mcr.microsoft.com/mssql/server:2019-latest
@@ -31,6 +37,3 @@ services:
       - "rabbitmq_data:/bitnami"
     networks:
       - app-tier
-volumes:
-  rabbitmq_data:
-    driver: local
