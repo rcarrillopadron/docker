@@ -12,7 +12,7 @@ volumes:
 
 services:
   sqlserver:
-    image: mcr.microsoft.com/mssql/server:2019-latest
+    image: mcr.microsoft.com/mssql/server
     container_name: sqlserver
     environment:
       - ACCEPT_EULA=Y
@@ -23,7 +23,7 @@ services:
     networks:
       - app-tier
   rabbitmq:
-    image: "bitnami/rabbitmq:3.8"
+    image: "bitnami/rabbitmq"
     container_name: rabbitmq
     environment: 
       - RABBITMQ_USERNAME=${RABBITMQ_USERNAME}
