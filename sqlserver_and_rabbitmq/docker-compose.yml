@@ -1,18 +1,16 @@
 version: "3.3"
 
 networks:
-  app-tier:
+  signify-network:
     driver: bridge
 
 volumes:
   sqlserver_data:
     driver: local
-  rabbitmq_data:
-    driver: local
 
 services:
   sqlserver:
-    image: mcr.microsoft.com/mssql/server
+    image: mcr.microsoft.com/mssql/server:2019-latest
     container_name: sqlserver
     environment:
       - ACCEPT_EULA=Y
@@ -20,12 +18,14 @@ services:
       - MSSQL_PID=Developer
     ports:
       - 1433:1433
+    volumes:
+      - ${SQLSERVER_DATAFOLDER}:/var/opt/mssql/data
     networks:
-      - app-tier
+      - signify-network
   rabbitmq:
-    image: "bitnami/rabbitmq"
+    image: rabbitmq:3-management
     container_name: rabbitmq
-    environment: 
+    environment:
       - RABBITMQ_USERNAME=${RABBITMQ_USERNAME}
       - RABBITMQ_PASSWORD=${RABBITMQ_PASSWORD}
     ports:
@@ -33,7 +33,5 @@ services:
       - "5672:5672"
       - "25672:25672"
       - "15672:15672"
-    volumes:
-      - "rabbitmq_data:/bitnami"
     networks:
-      - app-tier
+      - signify-network

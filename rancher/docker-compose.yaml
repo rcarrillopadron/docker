@@ -1,0 +1,22 @@
+version: '3.3'
+
+services:
+  rancher:
+    image: rancher/rancher:latest
+    container_name: rancher
+    privileged: true
+    restart: unless-stopped
+    ports:
+      - '80:80'
+      - '443:443'
+    volumes:
+      - rancher-vol:/var/lib/rancher
+      - rancher-log:/var/log
+      - rancher-kubelet:/var/lib/kubelet
+      - rancher-cni:/var/lib/cni
+
+volumes:
+  rancher-vol:
+  rancher-log:
+  rancher-kubelet:
+  rancher-cni:
