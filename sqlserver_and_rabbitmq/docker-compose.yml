@@ -1,9 +1,5 @@
 version: "3.3"
 
-networks:
-  signify-network:
-    driver: bridge
-
 volumes:
   sqlserver_data:
     driver: local
@@ -14,24 +10,20 @@ services:
     container_name: sqlserver
     environment:
       - ACCEPT_EULA=Y
-      - SA_PASSWORD=${SQLSERVER_SA_PASSWORD}
+      - SA_PASSWORD=${PASSWORD}
       - MSSQL_PID=Developer
     ports:
       - 1433:1433
     volumes:
       - ${SQLSERVER_DATAFOLDER}:/var/opt/mssql/data
-    networks:
-      - signify-network
   rabbitmq:
     image: rabbitmq:3-management
     container_name: rabbitmq
     environment:
       - RABBITMQ_USERNAME=${RABBITMQ_USERNAME}
-      - RABBITMQ_PASSWORD=${RABBITMQ_PASSWORD}
+      - RABBITMQ_PASSWORD=${PASSWORD}
     ports:
       - "4369:4369"
       - "5672:5672"
       - "25672:25672"
       - "15672:15672"
-    networks:
-      - signify-network
