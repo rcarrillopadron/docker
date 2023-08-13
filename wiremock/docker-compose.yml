@@ -1,0 +1,9 @@
+## create a docker compose for wiremock
+
+version: "3"
+
+services:
+  wiremock:
+    image: rodolpheche/wiremock:2.26.3
+    ports:
+      - "8080:8080"
